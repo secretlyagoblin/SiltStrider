@@ -2,12 +2,14 @@
 
 namespace SiltStrider.Tests
 {
-    public class LandscapeRecordTests
+    public class CellRecordTests
     {
         [Test]
         public void CreateRecord()
         {
-            var record = new Records.Landscape(0,0,Enumerable.Range(0,65*65).Select(x => Random.Shared.Next(-120,120)));
+            var instance = new Records.Instance("boyMod", 1);
+
+            var record = new Records.Cell(0,0, Records.Region.BitterCoastRegion, new List<Records.Instance>() { instance });
 
 
             Assert.IsNotNull(record);

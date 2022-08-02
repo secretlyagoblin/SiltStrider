@@ -34,29 +34,67 @@ namespace SiltStrider.Conversion
                     new {name = "Bloodmoon.esm", size = 9631798},
                     new {name = "Tribunal.esm", size = 4565686}
                 },
-                records = document.Records.ToDictionary(x => x.Name, x => x.Serialise())
+                records = document.Records.ToDictionary(x => $"{x.Name}", x => x.Serialise())
             };
         }
 
         public static object Serialise(this Record record)
         {
-            if (record is LandscapeRecord l) return l.ToSerialisationRecord();
+            if (record is Landscape l) return l.ToSerialisationRecord();
+            if (record is Cell c) return c.ToSerialisationRecord();
+            if (record is Instance i) return i.ToSerialisationRecord();
 
             throw new NotImplementedException();
         }
+        public static object ToSerialisationRecord(this Cell cell)
+        {
+            return new
+            {
+                type = "Cell",
+                region = cell.Region.ToFormattedText(),
+                location = new { x = cell.Location.X, y = cell.Location.Y },
+                traits = new[] {"HasWater"},
+                references = cell.References.ToDictionary(
+                    x => x.Name, 
+                    x => x.Serialise())
+            };
+        }
 
-        public static object ToSerialisationRecord(this LandscapeRecord landscapeRecord)
+        public static object ToSerialisationRecord(this Instance instance)
+        {
+            return new
+            {
+                object_id = instance.Block,
+                scale = instance.Scale,
+                reference_blocked = false,
+                position = new { 
+                    position = new[] {
+                        instance.Position.X,
+                        instance.Position.Y,
+                        instance.Position.Z},
+                    rotation = new[] {
+                        instance.Rotation.X,
+                        instance.Rotation.Y,
+                        instance.Rotation.Z},
+                }
+            };
+        }
+
+        public static object ToSerialisationRecord(this Landscape landscape)
         {
             var heightmap = new byte[4232];
-            landscapeRecord.VerticalDatum.ToBytes().CopyTo(heightmap, 0);
+            landscape.VerticalDatum.ToBytes().CopyTo(heightmap, 0);
             heightmap[4] = 0x00;
-            landscapeRecord.Heightmap.ToBytes().CopyTo(heightmap, 5);
+            landscape.Heightmap.ToBytes().CopyTo(heightmap, 5);
 
             return new
             {
                 type = "Landscape",
-                height_map = heightmap.ToBase64(), //Nope, needs more
-                normal_map = landscapeRecord.Normalmap.ToBytes().ToBase64()
+                traits = new[] { "Unknown1", "Unknown2" }, // ??
+                height_map = heightmap.ToBase64(), 
+                normal_map = landscape.Normalmap.ToBytes().ToBase64(),
+                low_lod_height_map = landscape.LowLODHeightMap.ToBytes().ToBase64(),
+                textures = landscape.Textures.ToBytes().ToBase64(),
             };
         }
 
@@ -91,23 +129,43 @@ namespace SiltStrider.Conversion
             return bytes;
         }
 
-        public static int ByteLength<T>(this T item)
+        internal static int ByteLength<T>(this T item)
         {
             if (item is byte) return 1;
             if (item is sbyte) return 1;
             if (item is Byte3) return 3;
             if (item is SByte3) return 3;
+            if (item is short) return 2;
             throw new NotImplementedException(typeof(T).ToString());
         }
 
-        public static byte[] ToBytes<T>(this T item)
+        internal static byte[] ToBytes<T>(this T item)
         {
             if (item is byte b) return new byte[] { b };
             if (item is sbyte sb) return new byte[] { (byte)sb };
             if (item is Byte3 b3) return new byte[] { b3.X,b3.Y,b3.Z };
             if (item is SByte3 sb3) return new byte[] { (byte)sb3.X, (byte)sb3.Y, (byte)sb3.Z };
             if (item is float f) return BitConverter.GetBytes(f);
+            if (item is short s) return BitConverter.GetBytes(s);
             throw new NotImplementedException(typeof(T).ToString());
+        }
+
+        internal static string ToFormattedText(this Region value)
+        {
+            var stringVal = value.ToString();
+            var bld = new StringBuilder();
+
+            for (var i = 0; i < stringVal.Length; i++)
+            {
+                if (char.IsUpper(stringVal[i]))
+                {
+                    bld.Append(" ");
+                }
+
+                bld.Append(stringVal[i]);
+            }
+
+            return bld.ToString().Trim();
         }
 
 

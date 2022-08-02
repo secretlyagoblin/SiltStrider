@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SiltStrider.Primitives
 {
-    internal class Long2 : IEquatable<Long2>
+    public struct Long2 : IEquatable<Long2>
     {
         public Long2(long x, long y)
         {
@@ -17,7 +17,7 @@ namespace SiltStrider.Primitives
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as Long2);
+            return obj is Long2 vector && Equals(vector);
         }
 
         public bool Equals(Long2 other)
