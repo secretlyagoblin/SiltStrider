@@ -59,9 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GH_Record.cs" />
-    <Compile Include="Nodes\Landscape.cs" />
+    <Compile Include="Nodes\CreateLandscape.cs" />
+    <Compile Include="Nodes\CreatePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordParameter.cs" />
+    <Compile Include="SiltStriderInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -82,4 +84,8 @@
     <Error Condition="!Exists('..\packages\Grasshopper.7.15.22039.13001\build\Grasshopper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Grasshopper.7.15.22039.13001\build\Grasshopper.targets'))" />
   </Target>
   <Import Project="..\packages\Grasshopper.7.15.22039.13001\build\Grasshopper.targets" Condition="Exists('..\packages\Grasshopper.7.15.22039.13001\build\Grasshopper.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

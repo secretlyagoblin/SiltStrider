@@ -4,11 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Grasshopper.Kernel;
+using SiltStrider.Records;
 
 namespace SiltStrider.Gh.Nodes
 {
-    public class Landscape : GH_Component
+    public class CreateLandscape : GH_Component
     {
+        public CreateLandscape() : base(
+                name: "Create Landscape",
+                nickname: "Land",
+                description: "Create a landscape record",
+                category: "Silt Strider",
+                subCategory: "Records"
+            
+            )
+        {
+
+        }
+
+        public override bool IsPreviewCapable => true;
+
         public override Guid ComponentGuid => new Guid("5CC037ED-1D92-4FD6-8CAE-00E595EE81D5");
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
@@ -37,10 +52,10 @@ namespace SiltStrider.Gh.Nodes
             if(heights.Count != 65*65)
             {
                 this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"A Landscape record requires exactly {65 * 65} heights (65*65)");
-                DA.AbortComponentSolution();
+                return;
             }
 
-            var landscape = new LandscapeRecord(x,y,heights);
+            var landscape = new Landscape(x,y,heights);
 
             DA.SetData(0, new GH_Record() { Value = landscape });
 

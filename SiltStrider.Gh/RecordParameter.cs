@@ -5,7 +5,7 @@ namespace SiltStrider.Gh
 {
     public class RecordParameter : GH_Param<GH_Record>
     {
-        public RecordParameter() : base("Record", "R", "", category, subcategory, access)
+        public RecordParameter() : base("Record", "R", "", "Silt Strider", "Types", GH_ParamAccess.item)
         {
         }
 
