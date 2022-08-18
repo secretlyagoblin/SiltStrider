@@ -13,7 +13,7 @@ namespace SiltStrider.Records
 
         public Instance(string modName, int index) : base($"::{modName}::cellref::{index}")
         {
-
+            throw new System.NotImplementedException();
         }
     }
 }

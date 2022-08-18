@@ -4,6 +4,11 @@ namespace SiltStrider.Records
 {
     public abstract class Record
     {
+        protected Record()
+        {
+
+        }
+
         protected Record(string name)
         {
             Name = name;

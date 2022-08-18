@@ -55,7 +55,17 @@ namespace SiltStrider.Gh.Nodes
                 return;
             }
 
+            var r = new Random();
+
             var landscape = new Landscape(x,y,heights);
+
+            for (int u = 0; u < 16; u++)
+            {
+                for (int v = 0; v < 16; v++)
+                {
+                    landscape.Textures[u, v] = (short)r.Next(4);
+                }
+            }
 
             DA.SetData(0, new GH_Record() { Value = landscape });
 
