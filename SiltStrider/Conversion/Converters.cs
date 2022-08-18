@@ -56,7 +56,7 @@ namespace SiltStrider.Conversion
                 traits = new[] {"HasWater"},
                 references = cell.References.ToDictionary(
                     x => x.Name, 
-                    x => x.Serialise())
+                    x => x.ToSerialisationRecord())
             };
         }
 

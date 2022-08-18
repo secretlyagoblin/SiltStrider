@@ -58,7 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters.cs" />
     <Compile Include="GH_Record.cs" />
+    <Compile Include="Nodes\CreateInstance.cs" />
     <Compile Include="Nodes\CreateLandscape.cs" />
     <Compile Include="Nodes\CreatePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
