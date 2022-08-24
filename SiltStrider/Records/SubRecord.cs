@@ -9,7 +9,7 @@ namespace SiltStrider.Records
 
         }
 
-        public Record Parent { get; set; }
+        //public Record Parent { get; set; }
 
         abstract public string Type { get; }
 

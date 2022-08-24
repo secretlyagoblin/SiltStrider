@@ -61,6 +61,7 @@
     <Compile Include="Converters.cs" />
     <Compile Include="GH_SubRecord.cs" />
     <Compile Include="GH_Record.cs" />
+    <Compile Include="Nodes\CreateCells.cs" />
     <Compile Include="Nodes\CreateInstance.cs" />
     <Compile Include="Nodes\CreateLandscape.cs" />
     <Compile Include="Nodes\CreatePlugin.cs" />
