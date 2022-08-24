@@ -34,19 +34,25 @@ namespace SiltStrider.Conversion
                     new {name = "Bloodmoon.esm", size = 9631798},
                     new {name = "Tribunal.esm", size = 4565686}
                 },
-                records = document.Records.ToDictionary(x => $"{x.Name}", x => x.Serialise())
+                records = document.Records.ToDictionary(x => $"{x.Name}", x => x.Serialise(document))
             };
         }
 
-        public static object Serialise(this Record record)
+        public static object Serialise(this Record record, ES3Document document)
         {
             if (record is Landscape l) return l.ToSerialisationRecord();
-            if (record is Cell c) return c.ToSerialisationRecord();
-            if (record is Instance i) return i.ToSerialisationRecord();
+            if (record is Cell c) return c.ToSerialisationRecord(document);
 
             throw new NotImplementedException();
         }
-        public static object ToSerialisationRecord(this Cell cell)
+        public static object Serialise(this SubRecord record, Record parent, ES3Document document)
+        {
+            if (record is Instance i && parent is Cell cell) return i.ToSerialisationRecord(cell);
+
+            throw new NotImplementedException();
+        }
+
+        public static object ToSerialisationRecord(this Cell cell, ES3Document document)
         {
             return new
             {
@@ -54,13 +60,13 @@ namespace SiltStrider.Conversion
                 region = cell.Region.ToFormattedText(),
                 location = new { x = cell.Location.X, y = cell.Location.Y },
                 traits = new[] {"HasWater"},
-                references = cell.References.ToDictionary(
-                    x => x.Name, 
-                    x => x.ToSerialisationRecord())
+                references = cell.References.Select((reference,index) => (reference, index)).ToDictionary(
+                    x => $"::{ document.Name}::cellref::{ x.index}", 
+                    x => x.reference.ToSerialisationRecord(cell))
             };
         }
 
-        public static object ToSerialisationRecord(this Instance instance)
+        public static object ToSerialisationRecord(this Instance instance, Cell cell)
         {
             return new
             {
@@ -69,9 +75,9 @@ namespace SiltStrider.Conversion
                 reference_blocked = false,
                 position = new { 
                     position = new[] {
-                        instance.Position.X,
-                        instance.Position.Y,
-                        instance.Position.Z},
+                        (float)(instance.Position.X - (cell.Location.X * Globals.CellSize)),
+                        (float)(instance.Position.Y - (cell.Location.Y * Globals.CellSize)),
+                        (float)instance.Position.Z},
                     rotation = new[] {
                         instance.Rotation.X,
                         instance.Rotation.Y,

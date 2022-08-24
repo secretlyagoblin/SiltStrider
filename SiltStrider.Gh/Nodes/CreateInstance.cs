@@ -31,12 +31,12 @@ namespace SiltStrider.Gh.Nodes
         {
             pManager.AddPlaneParameter("Transform", "T", "", GH_ParamAccess.item);
             pManager.AddNumberParameter("Scale", "S", "", GH_ParamAccess.item,1.0);
-            pManager.AddTextParameter("BlockName","N","", GH_ParamAccess.item,)
+            pManager.AddTextParameter("BlockName", "N", "", GH_ParamAccess.item, "");
         }
 
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new RecordParameter(), "Record", "R", "", GH_ParamAccess.item);
+            pManager.AddParameter(new SubRecordParameter(), "SubRecord", "SR", "", GH_ParamAccess.item);
         }
 
         protected override void SolveInstance(IGH_DataAccess DA)
@@ -61,7 +61,7 @@ namespace SiltStrider.Gh.Nodes
 
             //Also could just store in world space and then dynamically drop it into cells depending on bounds
 
-            var instance = new Instance("a", 2)
+            var instance = new Instance()
             {
                 Position = p.Value.Origin.ToMorrow(),
                 Rotation = new Primitives.Float3((float)u, (float)v, (float)w),
@@ -69,7 +69,7 @@ namespace SiltStrider.Gh.Nodes
                 Block = block
             };
 
-            DA.SetData(0, new GH_Record() { Value = instance });
+            DA.SetData(0, new GH_SubRecord() { Value = instance });
 
         }
     }

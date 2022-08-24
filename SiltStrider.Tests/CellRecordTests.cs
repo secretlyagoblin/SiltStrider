@@ -7,7 +7,7 @@ namespace SiltStrider.Tests
         [Test]
         public void CreateRecord()
         {
-            var instance = new Records.Instance("boyMod", 1);
+            var instance = new Records.Instance();
 
             var record = new Records.Cell(0,0, Records.Region.BitterCoastRegion, new List<Records.Instance>() { instance });
 

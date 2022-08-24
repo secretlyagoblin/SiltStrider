@@ -9,6 +9,8 @@ namespace SiltStrider
 {
     public class ES3Document
     {
+        public string Name { get; set; } = "MyPlugin";
+
         public IList<Record> Records { get; } = new List<Record>();
 
         public string ToYaml() => Conversion.Converters.ToYaml(this);
