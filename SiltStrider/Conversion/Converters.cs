@@ -58,7 +58,7 @@ namespace SiltStrider.Conversion
             {
                 type = "Cell",
                 region = cell.Region.ToFormattedText(),
-                location = new { x = cell.Location.X, y = cell.Location.Y },
+                location = new Dictionary<string, long>() { { "x", cell.Location.X }, { "y", cell.Location.Y } },
                 traits = new[] {"HasWater"},
                 references = cell.References.Select((reference,index) => (reference, index)).ToDictionary(
                     x => $"::{ document.Name}::cellref::{ x.index}", 
@@ -75,8 +75,8 @@ namespace SiltStrider.Conversion
                 reference_blocked = false,
                 position = new { 
                     position = new[] {
-                        (float)(instance.Position.X - (cell.Location.X * Globals.CellSize)),
-                        (float)(instance.Position.Y - (cell.Location.Y * Globals.CellSize)),
+                        (float)((cell.Location.X * Globals.CellSize)-instance.Position.X),
+                        (float)((cell.Location.Y * Globals.CellSize)-instance.Position.Y),
                         (float)instance.Position.Z},
                     rotation = new[] {
                         instance.Rotation.X,

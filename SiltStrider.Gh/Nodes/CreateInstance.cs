@@ -25,7 +25,7 @@ namespace SiltStrider.Gh.Nodes
 
         public override bool IsPreviewCapable => true;
 
-        public override Guid ComponentGuid => new Guid("973512C4 - 5478 - 48EA - 846E-DFDA05258D31");
+        public override Guid ComponentGuid => new Guid("973512C4-5478-48EA-846E-DFDA05258D31");
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
@@ -50,16 +50,7 @@ namespace SiltStrider.Gh.Nodes
 
 
             var transform = Rhino.Geometry.Transform.PlaneToPlane(Rhino.Geometry.Plane.WorldXY, p.Value);
-            var rotation = transform.GetEulerZYZ(out var u, out var v, out var w);
-
-
-            var heights = new List<int>();
-
-            DA.GetDataList(2, heights);
-
-            //TODO - store as double until the last minute??? or something??
-
-            //Also could just store in world space and then dynamically drop it into cells depending on bounds
+            transform.GetEulerZYZ(out var u, out var v, out var w);
 
             var instance = new Instance()
             {

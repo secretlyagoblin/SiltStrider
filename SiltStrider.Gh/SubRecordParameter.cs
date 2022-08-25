@@ -3,7 +3,7 @@ using System;
 
 namespace SiltStrider.Gh
 {
-    public class SubRecordParameter : GH_Param<GH_Record>
+    public class SubRecordParameter : GH_Param<GH_SubRecord>
     {
         public SubRecordParameter() : base("SubRecord", "SR", "", "Silt Strider", "Types", GH_ParamAccess.item)
         {
