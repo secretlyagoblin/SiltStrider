@@ -18,5 +18,10 @@ namespace SiltStrider.Gh
         {
             return new Double3(p.X, p.Y, p.Z);
         }
+
+        public static Double3 ToMorrow(this Rhino.Geometry.Vector3d v)
+        {
+            return new Double3(v.X, v.Y, v.Z);
+        }
     }
 }

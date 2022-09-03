@@ -29,6 +29,7 @@ namespace SiltStrider.Gh.Nodes
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddParameter(new RecordParameter(), "Records", "R", "", GH_ParamAccess.list);
+            pManager.AddTextParameter("Name", "N", "", GH_ParamAccess.item);
         }
 
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -39,8 +40,10 @@ namespace SiltStrider.Gh.Nodes
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             var records = new List<GH_Record>();
+            string name = "";
 
             DA.GetDataList(0, records);
+            DA.GetData(1,ref name);
 
             var plugin = new ES3Document();
 
@@ -48,6 +51,8 @@ namespace SiltStrider.Gh.Nodes
             {
                 plugin.Records.Add(r.Value);
             }
+
+            plugin.Name = name;
 
             DA.SetData(0, plugin.ToYaml());
         }

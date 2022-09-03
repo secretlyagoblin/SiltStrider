@@ -6,7 +6,7 @@ namespace SiltStrider.Records
 {
     public class Cell : OverlandRecord
     {
-        public Cell(long cellX, long cellY, Region region, IList<Instance> references) : base($"cell::{cellX}x{cellY}",new Primitives.Long2())
+        public Cell(long cellX, long cellY, Region region, IList<Instance> references) : base($"cell::{cellX}x{cellY}",new Primitives.Long2(cellX,cellY))
         {
             Region = region;
             References = references;

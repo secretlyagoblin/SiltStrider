@@ -75,8 +75,8 @@ namespace SiltStrider.Conversion
                 reference_blocked = false,
                 position = new { 
                     position = new[] {
-                        (float)((cell.Location.X * Globals.CellSize)-instance.Position.X),
-                        (float)((cell.Location.Y * Globals.CellSize)-instance.Position.Y),
+                        (float)(instance.Position.X),//-(cell.Location.X * Globals.CellSize)),
+                        (float)(instance.Position.Y),//-(cell.Location.Y * Globals.CellSize)),
                         (float)instance.Position.Z},
                     rotation = new[] {
                         instance.Rotation.X,

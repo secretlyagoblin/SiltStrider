@@ -48,14 +48,18 @@ namespace SiltStrider.Gh.Nodes
             DA.GetData(1, ref scale);
             DA.GetData(2, ref block);
 
-
             var transform = Rhino.Geometry.Transform.PlaneToPlane(Rhino.Geometry.Plane.WorldXY, p.Value);
-            transform.GetEulerZYZ(out var u, out var v, out var w);
+
+            // As I understand it, we break the compound translation/rotation transformation into its two components
+            transform.DecomposeRigid(out var position, out var rotation, Rhino.RhinoMath.ZeroTolerance);
+            // Now that the rotation is 'pure' we can break it down into a euler rotation
+            // I've made the out variables what I think that they coordinate with
+            rotation.GetYawPitchRoll(out var z, out var y, out var x);
 
             var instance = new Instance()
             {
-                Position = p.Value.Origin.ToMorrow(),
-                Rotation = new Primitives.Float3((float)u, (float)v, (float)w),
+                Position = position.ToMorrow(),
+                Rotation = new Primitives.Float3((float)x, (float)y, (float)z),
                 Scale = (float)scale,
                 Block = block
             };
